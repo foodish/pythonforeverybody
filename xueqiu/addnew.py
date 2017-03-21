@@ -51,7 +51,7 @@ num = max_num
        
 while num:
     if num == max_num:
-        id = 0
+        id = 1
         userid = seedid
     else:
         cur.execute('SELECT id, uid FROM People WHERE retrieved = 0 LIMIT 1')
