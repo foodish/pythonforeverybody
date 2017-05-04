@@ -4,7 +4,7 @@ import json
 import sqlite3
 
 
-conn = sqlite3.connect('xqfriends.db')
+conn = sqlite3.connect('xqfriends_0504.db')
 cur = conn.cursor()
          
 cur.execute('''CREATE TABLE IF NOT EXISTS People

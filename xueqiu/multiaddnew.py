@@ -1,3 +1,4 @@
+# 从数据库中随机挑选一个未访问过的用户作为种子用户，遍历其关注者；如果所有用户均被访问过，则结束
 from urllib.request import Request, urlopen
 from urllib import error, parse
 import json
