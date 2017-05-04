@@ -1,6 +1,5 @@
 # 从数据库中随机挑选一个未访问过的用户作为种子用户，遍历其关注者；如果所有用户均被访问过，则结束
 from urllib.request import Request, urlopen
-from urllib import error, parse
 import json
 import sqlite3
 import time
@@ -11,7 +10,7 @@ max_num = 5
 num = max_num
 pool_num = multiprocessing.cpu_count() * 2
 
-conn = sqlite3.connect('xqfriends.db')
+conn = sqlite3.connect('xqfriends_0504.db')
 cur = conn.cursor()
 
 cur.execute('''CREATE TABLE IF NOT EXISTS People
@@ -21,7 +20,7 @@ cur.execute('''CREATE TABLE IF NOT EXISTS Follows
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36',
-    'Cookie': 'xq_a_token=720138cf03fb8f84ecc90aab8d619a00dda68f65'
+    'Cookie': 'xq_a_token=afe4be3cb5bef00f249343e7c6ad8ac7dc0e17fb'
 }
 
 
@@ -48,6 +47,7 @@ def get_pageurl(uid):
 
 def parse_page(url):
     global id
+    print('当前解析的url为', url)
     js = get_pagedata(url)
     for u in js['users']:
         user_id = u['id']
@@ -79,13 +79,13 @@ def start():
         except:
             print('No unretrieved Xueqiu accounts found')
             break
-            # continue
 
         cur.execute('UPDATE People SET retrieved = 1 WHERE uid = ?', (userid, ))
 
         urls = get_pageurl(userid)
         for url in urls:
             parse_page(url)
+            time.sleep(3)
         conn.commit()
         num = num - 1
         print(num)
@@ -96,3 +96,5 @@ def start():
 
 if __name__ == '__main__':
     start()
+    #seedid = 1955602780 #不明真相的群众，关注较多
+    #2018766569
