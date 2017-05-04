@@ -1,3 +1,4 @@
+# 数据库查询
 import sqlite3
 
 conn = sqlite3.connect('xqfriends.db')

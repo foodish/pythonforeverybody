@@ -1,4 +1,4 @@
-# 每次输入一个雪球id，获取其关注列表的第一页,输入q退出
+# 每次输入一个雪球id，获取其关注列表的第一页,写入数据库，输入q退出
 # 运行时需要改写其中的cookie
 
 from urllib.request import Request, urlopen
