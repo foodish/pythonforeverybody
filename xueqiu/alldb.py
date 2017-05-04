@@ -2,7 +2,6 @@
 # 运行时需要改写其中的cookie
 
 from urllib.request import Request, urlopen
-from urllib import error, parse
 import json
 import sqlite3
 

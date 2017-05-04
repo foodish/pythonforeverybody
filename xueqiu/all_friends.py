@@ -1,12 +1,12 @@
+# 给定id，获取其所有的关注列表(未写入数据库)
 from urllib.request import Request, urlopen
-from urllib import error, parse
 import json
 
 
 #xq_url = 'https://xueqiu.com/friendships/groups/members.json?page=%d&uid=%s&gid=0' % (i, userid)
 headers = {
 		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36',
-		'Cookie': 'xq_a_token=720138cf03fb8f84ecc90aab8d619a00dda68f65'
+		'Cookie': 'xq_a_token=afe4be3cb5bef00f249343e7c6ad8ac7dc0e17fb'
 	}
 
 def get_page(uid, page):
