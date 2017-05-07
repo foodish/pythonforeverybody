@@ -1,7 +1,8 @@
+# coding:utf-8
 # 数据库查询
 import sqlite3
 
-conn = sqlite3.connect('xqfriends.db')
+conn = sqlite3.connect('xqfriends_0504.db')
 cur = conn.cursor()
 
 def f():
@@ -23,21 +24,18 @@ def f0():
 def f1():
     cur.execute('SELECT * FROM People')
     count = 0
-    print('People:')
     for row in cur:
-        if count < 25: print(row)
         count = count + 1
-    print(count, 'rows.')
+    print('People Table has', count, 'rows.')
 
 
 def f2():
     cur.execute('SELECT * FROM Follows')
     count = 0
-    print('Follows:')
     for row in cur:
-        if count < 25: print(row)
+        #if count < 25: print(row)
         count = count + 1
-    print(count, 'rows.')
+    print('Follows Table has', count, 'rows.')
 
 
 def f3():
@@ -70,10 +68,10 @@ def f5():
     print(cur.lastrowid)
     print(cur.rowcount)
 if __name__ == '__main__':
-    f()
-    # f0()
-    # f1()
-    # f2()
+    # f()
+    #f0()
+    f1()
+    f2()
     # f4()
     # f5()
     cur.close()
