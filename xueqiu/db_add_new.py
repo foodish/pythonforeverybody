@@ -43,7 +43,7 @@ def get_pageurl(uid):
 
 def parse_page(url):
     global id
-    print('当前解析的url为', url)
+    #print('当前解析的url为', url)
     js = get_page(url)
     for u in js['users']:
         user_id = u['id']
@@ -66,9 +66,9 @@ def parse_page(url):
 
 def start():
     global num
-    print(num)
     global id
     while (True):
+        print(num)
         cur.execute('SELECT id, uid FROM People WHERE retrieved = 0 LIMIT 1')
         try:
             (id, userid) = cur.fetchone()
@@ -77,12 +77,14 @@ def start():
             print('No unretrieved Xueqiu accounts found')
             break
 
-        cur.execute('UPDATE People SET retrieved = 1 WHERE uid = ?', (userid, ))
 
         urls = get_pageurl(userid)
         for url in urls:
             parse_page(url)
             time.sleep(1)
+        
+        cur.execute('UPDATE People SET retrieved = 1 WHERE uid = ?', (userid, ))
+        
         conn.commit()
         num = num + 1
         time.sleep(1)
