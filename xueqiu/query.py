@@ -52,13 +52,13 @@ def f3():
 
 def f4():
     # cur.execute("SELECT * FROM People WHERE uid = '7379293559'")
-    # cur.execute("SELECT * FROM People WHERE name = '不明真相的群众'")
+    cur.execute("SELECT * FROM People WHERE name = '不明真相的群众'")
     # cur.execute("SELECT * FROM People WHERE id = '1'")
     # cur.execute("SELECT * FROM People WHERE fr_num = '0'")
     # cur.execute("SELECT * FROM People WHERE fo_num > '10000'")
     # cur.execute("SELECT * FROM People WHERE fo_num > '10000' AND gender ='f'")
     # cur.execute("SELECT * FROM People WHERE fo_num > '10000' AND gender ='f' ORDER BY fo_num DESC")
-    cur.execute("SELECT * FROM People WHERE fo_num > '10000' AND gender ='f' ORDER BY fr_num ASC ")
+    # cur.execute("SELECT * FROM People WHERE fo_num > '10000' AND gender ='f' ORDER BY fr_num ASC ")
     print(cur.fetchall())
 
 def f5():
@@ -70,9 +70,9 @@ def f5():
 if __name__ == '__main__':
     # f()
     #f0()
-    f1()
-    f2()
-    # f4()
+    # f1()
+    # f2()
+    f4()
     # f5()
     cur.close()
     #me:7379293559
