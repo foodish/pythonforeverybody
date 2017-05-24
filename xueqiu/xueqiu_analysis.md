@@ -1,7 +1,8 @@
 1. 总数据量
-    People:178591
-    Follows:2531570
-    People数据统计：
+    - People:178591
+    - Follows:2531570
+    - People数据统计：
+    - 
                       fr_num        fo_num
     count  178591.000000  1.785910e+05
     mean       81.695567  7.391412e+02
