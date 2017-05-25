@@ -5,21 +5,6 @@ import sqlite3
 conn = sqlite3.connect('xqfriends_0504.db')
 cur = conn.cursor()
 
-def f():
-    cur.execute("SELECT * FROM People WHERE fo_num > '0'")
-    total = cur.fetchall()
-    # print(total)
-    # print(total[0])
-    print(cur.rowcount)
-
-
-
-def f0():
-    cur.execute('SELECT * FROM People')
-    print(cur.rowcount)
-    cur.fetchall()
-    print(cur.rowcount)
-
 
 def f1():
     cur.execute('SELECT * FROM People')
@@ -33,7 +18,7 @@ def f2():
     cur.execute('SELECT * FROM Follows')
     count = 0
     for row in cur:
-        #if count < 25: print(row)
+        # if count < 25: print(row)
         count = count + 1
     print('Follows Table has', count, 'rows.')
 
@@ -45,7 +30,8 @@ def f3():
     count = 0
     print('Connections for id=2:')
     for row in cur:
-        if count < 25: print(row)
+        if count < 25:
+            print(row)
         count = count + 1
     print(count, 'rows.')
 
@@ -58,8 +44,10 @@ def f4():
     # cur.execute("SELECT * FROM People WHERE fo_num > '10000'")
     # cur.execute("SELECT * FROM People WHERE fo_num > '10000' AND gender ='f'")
     # cur.execute("SELECT * FROM People WHERE fo_num > '10000' AND gender ='f' ORDER BY fo_num DESC")
-    # cur.execute("SELECT * FROM People WHERE fo_num > '10000' AND gender ='f' ORDER BY fr_num ASC ")
+    # cur.execute("SELECT * FROM People WHERE fo_num > '10000' AND gender ='f'
+    # ORDER BY fr_num ASC ")
     print(cur.fetchall())
+
 
 def f5():
     # cur.execute("SELECT count(*) FROM People WHERE fo_num > '10000' AND gender ='f'")
@@ -67,13 +55,13 @@ def f5():
     cur.execute("SELECT count(*) FROM People")
     print(cur.lastrowid)
     print(cur.rowcount)
+
+
 if __name__ == '__main__':
-    # f()
-    #f0()
     # f1()
     # f2()
     f4()
     # f5()
     cur.close()
-    #me:7379293559
-    #方丈：1955602780
+    # me:7379293559
+    # 方丈：1955602780
