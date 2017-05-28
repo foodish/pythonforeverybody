@@ -24,6 +24,7 @@ def f2():
 
 
 def f3():
+    # 连接People和Follows表，选择id为2的用户所关注的用户
     cur.execute('''SELECT * FROM Follows JOIN People
             ON Follows.to_id = People.id
             WHERE Follows.from_id = 2''')
@@ -37,8 +38,8 @@ def f3():
 
 
 def f4():
-    cur.execute("SELECT * FROM People WHERE uid = '7379293559'")
-    # cur.execute("SELECT * FROM People WHERE name = '不明真相的群众'")
+    # cur.execute("SELECT * FROM People WHERE uid = '7379293559'")
+    cur.execute("SELECT * FROM People WHERE name = '不明真相的群众'")
     # cur.execute("SELECT * FROM People WHERE id = '1'")
     # cur.execute("SELECT * FROM People WHERE fr_num = '0'")
     # cur.execute("SELECT * FROM People WHERE fo_num > '10000'")
@@ -49,16 +50,11 @@ def f4():
     print(cur.fetchone())
 
 
-def f5():
-    cur.execute("SELECT count(*) FROM People")
-    print(cur.rowcount)
-
-
 if __name__ == '__main__':
     f1()
     f2()
+    f3()
     f4()
-    f5()
     cur.close()
     # me:7379293559
     # 方丈：1955602780
