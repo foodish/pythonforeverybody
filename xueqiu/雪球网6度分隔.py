@@ -51,6 +51,14 @@ def searchDepth(targetId, currentId, linkTree, depth):
     Raises:
         SolutionFound -- [找到链接树]
     """
+    cur.execute("SELECT name FROM People WHERE id = ?", (currentId,))
+    current_Name = cur.fetchone()  # tuple形式
+    currentName = current_Name[0]
+
+    cur.execute("SELECT name FROM People WHERE id = ?", (targetId,))
+    target_Name = cur.fetchone()  # tuple形式
+    targetName = target_Name[0]
+
     if depth == 0:
         # 停止递归，返回结果
         return linkTree
@@ -60,8 +68,10 @@ def searchDepth(targetId, currentId, linkTree, depth):
         # 若此用户未关注任何用户，则跳过此节点
         return {}
     if targetId in linkTree.keys():
-        print("TARGET " + str(targetId) + " FOUND!")
-        raise SolutionFound("User: " + str(currentId))
+        # print("TARGET " + str(targetId) + " FOUND!")
+        print("TARGET " + str(targetName) + " FOUND!")
+        # raise SolutionFound("User: " + str(currentId))
+        raise SolutionFound("User: " + str(currentName))
 
     for branchKey, branchValue in linkTree.items():
         try:
@@ -70,14 +80,10 @@ def searchDepth(targetId, currentId, linkTree, depth):
                                               branchValue, depth - 1)
         except SolutionFound as e:
             print(e.message)
-            raise SolutionFound("User: " + str(currentId))
-    return linkTree
+            # raise SolutionFound("User: " + str(currentId))
+            raise SolutionFound("User: " + str(currentName))
 
-    try:
-        searchDepth(21849, 1, {}, 4)
-        print("No solution found")
-    except SolutionFound as e:
-        print(e.message)
+    return linkTree
 
 
 if __name__ == '__main__':
@@ -95,4 +101,8 @@ if __name__ == '__main__':
     linkTree = {}
     depth = 4
 
-    searchDepth(targetId, currentId, linkTree, depth)
+    try:
+        searchDepth(targetId, currentId, linkTree, depth)
+        print("No solution found")
+    except SolutionFound as e:
+        print(e.message)

@@ -38,8 +38,8 @@ def f3():
 
 
 def f4():
-    # cur.execute("SELECT * FROM People WHERE uid = '7379293559'")
-    cur.execute("SELECT * FROM People WHERE name = '不明真相的群众'")
+    cur.execute("SELECT * FROM People WHERE uid = '7379293559'")
+    # cur.execute("SELECT * FROM People WHERE name = '不明真相的群众'")
     # cur.execute("SELECT * FROM People WHERE id = '1'")
     # cur.execute("SELECT * FROM People WHERE fr_num = '0'")
     # cur.execute("SELECT * FROM People WHERE fo_num > '10000'")
@@ -51,10 +51,10 @@ def f4():
 
 
 if __name__ == '__main__':
-    f1()
-    f2()
-    f3()
+    # f1()
+    # f2()
+    # f3()
     f4()
     cur.close()
-    # me:7379293559
+    # me:(21849, 7379293559, '红色番茄酱', 'n', '省/直辖市', 48, 286, 0)
     # 方丈：1955602780
