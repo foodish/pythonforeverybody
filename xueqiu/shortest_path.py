@@ -22,11 +22,11 @@ if __name__ == '__main__':
     start_time = time.time()
     print('starting...')
     conn = sqlite3.connect("xqfriends_0504.db")
-    # following_data = pd.read_sql(
-    #     "select from_id, to_id from Follows where from_id in (select id from People where fo_num > 50000) and to_id in (select id from People where fo_num > 50000)", conn)
-
     following_data = pd.read_sql(
-        "select from_id, to_id from Follows where from_id in (select id from People) and to_id in (select id from People)", conn)
+        "select from_id, to_id from Follows where from_id in (select id from People where fo_num > 100000) and to_id in (select id from People where fo_num > 100000)", conn)
+
+    # following_data = pd.read_sql(
+    #     "select from_id, to_id from Follows where from_id in (select id from People) and to_id in (select id from People)", conn)
 
     conn.close()
 
@@ -35,19 +35,19 @@ if __name__ == '__main__':
     G = nx.DiGraph()
     for d in following_data.iterrows():
         G.add_edge(d[1][0], d[1][1])
-        print(d[1][0], d[1][1])
+        # print(d[1][0], d[1][1])
 
     print('nx has stored following data')
 
     # 计算两点之间所有路径
-    path_iter = nx.all_simple_paths(G, 1, 21849)
+    path_iter = nx.all_simple_paths(G, 1, 13847)
 
     # 查看具体路径
     # pathes = [p for p in path_iter]
     pathes = []
     for p in path_iter:
         pathes.append(p)
-        print(p, len(p))
+        # print(p, len(p))
     print(pathes)
 
     print('ending...')
