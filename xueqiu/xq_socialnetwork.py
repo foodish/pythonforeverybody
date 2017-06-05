@@ -179,12 +179,12 @@ if __name__ == '__main__':
     #shortest()
     #strongly_connected_components()
     #centrality()
-
-    likes_top_50(5000)
-    #for i in l:
-    #    save_graph_nets(i)
+    l = [100000, 50000, 10000, 5000]
+    # likes_top_50(5000)
+    for i in l:
+        save_graph_nets(i)
     #save_graph_nets(100000)
-        #likes_top_50(i)
+        likes_top_50(i)
         #print(i, 'is ok')
     print('---------ending---------')
     '''
