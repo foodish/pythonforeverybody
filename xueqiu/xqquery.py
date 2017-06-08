@@ -39,15 +39,19 @@ def f3():
 
 def f4():
     # cur.execute("SELECT * FROM People WHERE uid = '7379293559'")
-    cur.execute("SELECT * FROM People WHERE name = '跟我走吧14'")
+    # cur.execute("SELECT * FROM People WHERE name = '跟我走吧14'")
     # cur.execute("SELECT * FROM People WHERE id = '1'")
     # cur.execute("SELECT * FROM People WHERE fr_num = '0'")
-    # cur.execute("SELECT * FROM People WHERE fo_num > '10000'")
+    cur.execute(
+        "SELECT name, fo_num FROM People WHERE fo_num > '39000' ORDER BY fo_num DESC")
     # cur.execute("SELECT * FROM People WHERE fo_num > '10000' AND gender ='f'")
     # cur.execute("SELECT * FROM People WHERE fo_num > '10000' AND gender ='f' ORDER BY fo_num DESC")
     # cur.execute("SELECT * FROM People WHERE fo_num > '10000' AND gender ='f'
     # ORDER BY fr_num ASC ")
-    print(cur.fetchone())
+    count = 1
+    for i in cur.fetchall():
+        print(count, i[0], i[1])
+        count += 1
 
 
 if __name__ == '__main__':

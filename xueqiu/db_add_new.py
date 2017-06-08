@@ -1,101 +1,91 @@
 # coding : utf-8
 # 从数据库中随机挑选一个未访问过的用户作为种子用户，遍历其关注者；如果所有用户均被访问过，则结束
 import requests
-import json
 import sqlite3
 import time
-import multiprocessing
 
-# seedid = 2818960454
-num = 1
-pool_num = multiprocessing.cpu_count() * 2
-
-conn = sqlite3.connect('xqfriends_0504.db')
+conn = sqlite3.connect('xqfriends_0608.db')
 cur = conn.cursor()
-
-cur.execute('''CREATE TABLE IF NOT EXISTS People
-            (id INTEGER PRIMARY KEY, uid INTEGER UNIQUE, name TEXT, gender TEXT, province TEXT, fr_num INTEGER, fo_num INTEGER, retrieved INTEGER)''')
+cur.execute('''CREATE TABLE IF NOT EXISTS User(
+          id INT PRIMARY KEY, 
+          screen_name TEXT, 
+          gender TEXT, 
+          province TEXT, 
+          city TEXT, 
+          verified INT, 
+          verified_type INT, 
+          cube_count INT, 
+          stocks_count INT, 
+          friends_count INT, 
+          followers_count INT, 
+          status_count INT,
+          last_status_id INT, 
+          is_visited INT DEFAULT 0)''')
 cur.execute('''CREATE TABLE IF NOT EXISTS Follows
             (from_id INTEGER, to_id INTEGER, UNIQUE(from_id, to_id))''')
-
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36',
-    'Cookie': 'xq_a_token=afe4be3cb5bef00f249343e7c6ad8ac7dc0e17fb'
+    'User-Agent': 'Mozilla/5.0',
+    'Cookie'    : 'xq_a_token=876f2519b10cea9dc131b87db2e5318e5d4ea64f'
 }
 
+
 def get_page(url):
-    r = requests.get(url, headers=headers)
-    data = json.loads(r.text)
-    return data
+    r = requests.get(url, headers=headers).json()
+    return r
+
 
 def get_maxpage(uid):
-    url = 'https://xueqiu.com/friendships/groups/members.json?page=1&uid=%s&gid=0' % (uid)
+    url = 'https://xueqiu.com/friendships/groups/members.json?page=1&gid=0&uid=%s' % (uid)
     return get_page(url)['maxPage']
 
 
-def get_pageurl(uid):
-    pageurl = []
-    for i in range(1, int(get_maxpage(uid=uid))+1):
-        url = 'https://xueqiu.com/friendships/groups/members.json?page=%d&uid=%s&gid=0' % (i, uid)
-        pageurl.append(url)
-    return pageurl
+def get_page_list(uid):
+    max_page = int(get_maxpage(uid)) + 1
+    page_list = ['https://xueqiu.com/friendships/groups/members.json?page=%d&uid=%s&gid=0' % (i, uid) for i in range(1,
+                                                                                                                     max_page)]
+    return page_list
 
 
-def parse_page(url):
+def get_data(url):
     global id
-    #print('当前解析的url为', url)
-    js = get_page(url)
-    for u in js['users']:
+    print('==================================')
+    print('Getting friends list for page %s' % (url))
+    print('==================================')
+    data = get_page(url)
+    for u in data['users']:
         user_id = u['id']
-        # print(u['id'], u['screen_name'])
-        cur.execute('SELECT id FROM People WHERE uid = ? LIMIT 1', (user_id, ))
-        
+        cur.execute('SELECT id FROM User WHERE id = ? LIMIT 1', (user_id,))
         try:
             friend_id = cur.fetchone()[0]
-            # print(friend_id)
         except:
-            cur.execute('INSERT OR IGNORE INTO People (uid, name, gender, province, fr_num, fo_num, retrieved) VALUES (?, ?, ?, ?, ?, ?, 0)', (u['id'], u['screen_name'], u['gender'], u['province'], u['friends_count'], u['followers_count']))
+            cur.execute('INSERT OR IGNORE INTO User (id, screen_name, gender, province, city, verified, verified_type, '
+                        'cube_count, stocks_count, friends_count, followers_count, status_count,last_status_id, is_visited) VALUES (?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, 0)', ' \
+                    (u['id'], u['screen_name'], u['gender'], u['province'], u['city'], u['verified'], u['verified_type'],u['cube_count'], u['stocks_count'], u['friends_count'], u['followers_count'], u['status_count'], u['last_status_id']))
             conn.commit()
-            if cur.rowcount != 1:
-                print('Error inserting account:', user_id)
-                continue
             friend_id = cur.lastrowid
-        # print(id, friend_id)
+            # cursor.executemany("insert into userinfo(name, email) values(?, ?)", users)
         cur.execute('INSERT OR IGNORE INTO Follows (from_id, to_id) VALUES (?, ?)', (id, friend_id))
 
 
-def start():
-    global num
-    global id
-    while (True):
-        print(num)
-        cur.execute('SELECT id, uid FROM People WHERE retrieved = 0 LIMIT 1')
-        try:
-            (id, userid) = cur.fetchone()
-            # print(id, userid)
-        except:
-            print('No unretrieved Xueqiu accounts found')
-            break
+def main():
+    seed_id = 1955602780
+    try:
+        cur.execute('SELECT id FROM User WHERE is_visited = 0 LIMIT 1')
+        id = cur.fetchone()
+    except:
+        id = seed_id
 
 
-        urls = get_pageurl(userid)
-        for url in urls:
-            parse_page(url)
-            time.sleep(1)
-        
-        cur.execute('UPDATE People SET retrieved = 1 WHERE uid = ?', (userid, ))
-        
-        conn.commit()
-        num = num + 1
+    urls = get_page_list(id)
+    for url in urls:
+        get_data(url)
         time.sleep(1)
-
+    cur.execute('UPDATE User SET is_visited = 1 WHERE id = ?', (id,))
+    conn.commit()
+    time.sleep(1)
     cur.close()
 
-
 if __name__ == '__main__':
-    start()
-    #seedid = 1955602780 #不明真相的群众，关注较多
-    #2018766569
-
-
-
+    main()
+    # seedid = 1955602780 #不明真相的群众，关注较多
+    # 2018766569

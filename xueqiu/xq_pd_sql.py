@@ -12,6 +12,8 @@ def pagerank():
         'in (select id from People where fo_num > 10000)', conn)
     conn.close()
 
+    print(following_data.describe())
+
     G = nx.DiGraph()
     for d in following_data.iterrows():
         G.add_edge(d[1][0], d[1][1])
